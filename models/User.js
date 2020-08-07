@@ -63,7 +63,6 @@ const userSchema = new Schema({
     trim: true,
   },
   // Phonenumber provided by users during signup
-  //ISSUES WITH PHONE NUMBER REQUIERD
   phoneNumber: {
     type: Number,
     required: [true, "Phone number is required."],
@@ -75,18 +74,6 @@ const userSchema = new Schema({
     default:
       "https://i.pinimg.com/originals/55/2c/c0/552cc033eca6ec4b289a96777e078954.jpg",
   },
-  //   // Plant Page created by user
-  //   plants: {
-  //     type: [
-  //       {
-  //         type: Schema.Types.ObjectId,
-  //         ref: "Plant",
-  //       },
-  //     ],
-  //   },
-  // },
-  // {
-  //   timestamps: true,
 });
 
 module.exports = model("User", userSchema);
