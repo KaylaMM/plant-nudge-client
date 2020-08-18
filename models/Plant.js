@@ -9,7 +9,6 @@ const plantSchema = new Schema({
     default:
       "https://i.pinimg.com/originals/a2/71/a3/a271a31dd5be2fe5bab0addf377aa13d.jpg",
   },
-
   owner: {
     type: {
       type: Schema.Types.ObjectId,

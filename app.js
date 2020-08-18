@@ -32,11 +32,11 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //make sure express session is used before the passport
-require("./config/session.config.js")(app);
+// require("./config/session.config.js")(app);
 
-require("./config/passport/passport.config.js")(app);
+// require("./config/passport/passport.config.js")(app);
 
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 // app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
 
 // default value for title local
@@ -44,10 +44,10 @@ app.locals.title = "Express - Generated with IronGenerator";
 
 //Route SetUp
 app.use("/", require("./routes/index"));
-app.use("/auth", require("./routes/auth"));
-app.use("/userPlants", require("./routes/plant"));
+// app.use("/auth", require("./routes/auth"));
+// app.use("/userPlants", require("./routes/plant"));
 //not sure if this route is needed
-app.use("/user", require("./routes/user"));
-app.use("/progressPhotos", require("./routes/progress"));
+// app.use("/user", require("./routes/user"));
+// app.use("/progressPhotos", require("./routes/progress"));
 
 module.exports = app;
