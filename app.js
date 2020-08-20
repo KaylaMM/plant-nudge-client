@@ -3,10 +3,21 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const express = require("express");
+const favicon = require("serve-favicon");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
-const cors = require("cors");
+
+mongoose
+  .connect("mongodb://localhost/new-plant-nudge", { useNewUrlParser: true })
+  .then((x) => {
+    console.log(
+      `Connected to Mongo! Database name: "${x.connections[0].name}"`
+    );
+  })
+  .catch((err) => {
+    console.error("Error connecting to mongo", err);
+  });
 
 const app_name = require("./package.json").name;
 const debug = require("debug")(
@@ -15,39 +26,31 @@ const debug = require("debug")(
 
 const app = express();
 
-require("./config/db.config");
+// Middleware Setup
+app.use(logger("dev"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+// Express View engine setup
 
 app.use(
-  cors({
-    origin: [process.env.FRONTEND_POINT],
-    credentials: true,
+  require("node-sass-middleware")({
+    src: path.join(__dirname, "public"),
+    dest: path.join(__dirname, "public"),
+    sourceMap: true,
   })
 );
 
-// Middleware Setup
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-//make sure express session is used before the passport
-// require("./config/session.config.js")(app);
-
-// require("./config/passport/passport.config.js")(app);
-
-// app.use(express.static(path.join(__dirname, "public")));
-// app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine");
+app.use(express.static(path.join(__dirname, "public")));
+app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
 
 // default value for title local
 app.locals.title = "Express - Generated with IronGenerator";
 
-//Route SetUp
-app.use("/", require("./routes/index"));
-// app.use("/auth", require("./routes/auth"));
-// app.use("/userPlants", require("./routes/plant"));
-//not sure if this route is needed
-// app.use("/user", require("./routes/user"));
-// app.use("/progressPhotos", require("./routes/progress"));
+const index = require("./routes/index");
+app.use("/", index);
 
 module.exports = app;
