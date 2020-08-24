@@ -43,11 +43,9 @@ router.post("/signup", (req, res, next) => {
         .then((user) => {
           req.login(user, (error) => {
             if (error)
-              return res
-                .status(500)
-                .json({ message: "something went wrong with log in!" });
+              return res.status(500).json({ message: "something went wrong!" });
             // user.passwordHash = undefined;
-            res.status(200).json({ message: "Login successful!", user });
+            res.status(200).json({ message: "Successful!", user });
           });
         })
         .catch((error) => {
@@ -55,6 +53,7 @@ router.post("/signup", (req, res, next) => {
             res.status(500).json({ message: error.message });
           } else if (error.code === 11000) {
             res.status(500).json({
+              console.log("The error is here-=-=-=-=-=-=-=-=-");
               message:
                 "Username and email need to be unique. Either username or email is already in use.",
             });
